@@ -28,6 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // localStorageからタスクデータを読み込んで描画
   todos = loadTodos();
   renderTodos();
+  updateStats();
 });
 // タスク追加
 function addTodo() {
@@ -44,6 +45,7 @@ function addTodo() {
   todos.push(todo); // 配列にタスクを追加
   saveTodos(); //タスク追加後にデータ保存
   renderTodos(); // タスクを再描画
+  updateStats();
   todoInput.value = ""; // 入力欄を空にする
 }
 
@@ -89,6 +91,7 @@ function toggleTodo(id) {
     todo.completed = !todo.completed; // completedプロパティを反転させる
     saveTodos();
     renderTodos();
+    updateStats();
   }
 }
 
@@ -99,5 +102,16 @@ function deleteTodo(id) {
     todos = todos.filter((t) => t.id !== id); // IDが一致しないタスクだけを残す
     saveTodos();
     renderTodos();
+    updateStats();
   }
+}
+// 統計更新
+function updateStats() {
+  const total = todos.length;
+  const completed = todos.filter((t) => t.completed).length;
+  const active = total - completed;
+
+  totalTasksEl.textContent = total;
+  completedTasksEl.textContent = completed;
+  activeTasksEl.textContent = active;
 }
